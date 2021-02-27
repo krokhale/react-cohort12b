@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import {useContext, useState, useEffect} from 'react'
+import MyLi from "./my-li";
 
 function App() {
 
@@ -7,6 +9,12 @@ function App() {
 
   let firstName = 'John';
   let lastName = 'Doe';
+
+  // state - the state of a component
+  const [name, setName] = useState('John');
+
+  const [list, setList] = useState(['John', 'Jane']);
+
 
 
   setTimeout(() => {
@@ -18,12 +26,45 @@ function App() {
 
   };
 
+  const onNameChange = async (ev) => {
+    console.log(' this works!');
+    console.log(ev.currentTarget.value)
+    setName(ev.currentTarget.value)
+  };
+
+  const submitForm = async () => {
+    console.log('form has been submitted and the value of the input element is', name)
+    setList([...list, name]) // updating or adding to an array in the state variable array
+
+
+  };
+
   return (
     <div className="App">
       {/*JSX*/}
 
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+
+
+        <input type="text" onChange={onNameChange} value={name} placeholder={'Type your First Name'}/>
+        <button onClick={submitForm}>Submit</button>
+
+        <hr/>
+
+        <ul>
+          {list.map((listItem, idx) => {
+            // return <li key={idx} style={{fontSize: '20px', fontWeight: 'bold', color: 'red'}}>{listItem}</li>
+            return <MyLi key={idx} txt={listItem} />
+          })}
+        </ul>
+
+        {/*ternary operator*/}
+        {name=='John' && <p>Show this only when name is John</p>}
+
+        <p style={{background: (name=='John' ? 'red' : 'green'), fontSize: (name=='John' ? '50px' : '20px')}}>
+          the current value of the state variable name is: {name}
+        </p>
 
         <p>
           {firstName} {lastName}
